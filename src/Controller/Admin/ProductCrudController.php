@@ -40,17 +40,41 @@ class ProductCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
+        $requierd = true;
+
+        if ($pageName == 'edit') {
+
+            $requierd = false;
+        }
+
         return [
-            TextField::new('name')->setLabel('Nom')->setHelp('Nom de votre produit'),
-            SlugField::new('slug')->setTargetFieldName('name')->setLabel('URL')->setHelp('URL de votre produit'),
-            TextEditorField::new('description')->setLabel('Description')->setHelp('Description de votre produit'),
-            ImageField::new('image')->setLabel('Image')->setHelp('Image du produit 600x600px')->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')->setBasePath('/uploads')->setUploadDir('/public/uploads'),
-            NumberField::new('price')->setLabel('Prix H.T.')->setHelp('Prix H.T. du produit, sans le sigle €'),
-            ChoiceField::new('tva')->setLabel('Taux de T.V.A')->setChoices([
-                '5%' => '5',
-                '10%' => '10',
-                '20%' => '20'
-            ]),
+            TextField::new('name')
+                ->setLabel('Nom')
+                ->setHelp('Nom de votre produit'),
+            SlugField::new('slug')
+                ->setTargetFieldName('name')->setLabel('URL')
+                ->setHelp('URL de votre produit'),
+            TextEditorField::new('description')
+                ->setLabel('Description')
+                ->setHelp('Description de votre produit'),
+            ImageField::new('image')
+                ->setLabel('Image')
+                ->setHelp('Image du produit 600x600px')
+                ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]')
+                ->setBasePath('/uploads')
+                ->setUploadDir('/public/uploads')
+                ->setRequired($requierd)
+                ,
+            NumberField::new('price')
+                ->setLabel('Prix H.T.')
+                ->setHelp('Prix H.T. du produit, sans le sigle €'),
+            ChoiceField::new('tva')
+                ->setLabel('Taux de T.V.A')
+                ->setChoices([
+                    '5%' => '5',
+                    '10%' => '10',
+                    '20%' => '20'
+                ]),
             AssociationField::new('category', 'Catégorie associée')
         ];
     }
